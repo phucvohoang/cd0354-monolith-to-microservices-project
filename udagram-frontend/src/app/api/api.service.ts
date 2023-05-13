@@ -3,9 +3,7 @@ import { HttpClient, HttpHeaders, HttpRequest, HttpEvent } from '@angular/common
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 
-// const API_HOST = environment.apiHost;
-const API_HOST = 'http://a5060b49a85194013b40b31c624716ae-1875788023.us-east-1.elb.amazonaws.com:8080/api/v0';
-console.log('🚀 ~ file: api.service.ts:7 ~ API_HOST:', API_HOST);
+const API_HOST = environment.apiHost;
 
 @Injectable({
   providedIn: 'root',

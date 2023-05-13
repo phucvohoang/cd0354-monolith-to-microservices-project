@@ -18,12 +18,12 @@ jobs:
             echo "Inside the Build and push Docker image step"
             docker --version # print the version for logging
             docker-compose -f docker-compose-build.yaml build --parallel
-            docker tag reverseproxy phucvobushjdo/reverseproxy:v4
-            docker tag udagram-api-user phucvobushjdo/udagram-api-user:v4
-            docker tag udagram-api-feed phucvobushjdo/udagram-api-feed:v4
-            docker tag udagram-frontend phucvobushjdo/udagram-frontend:v4
+            docker tag reverseproxy phucvobushjdo/reverseproxy:v5
+            docker tag udagram-api-user phucvobushjdo/udagram-api-user:v5
+            docker tag udagram-api-feed phucvobushjdo/udagram-api-feed:v5
+            docker tag udagram-frontend phucvobushjdo/udagram-frontend:v5
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push phucvobushjdo/reverseproxy:v4
-            docker push phucvobushjdo/udagram-api-user:v4
-            docker push phucvobushjdo/udagram-api-feed:v4
-            docker push phucvobushjdo/udagram-frontend:v4
+            docker push phucvobushjdo/reverseproxy:v5
+            docker push phucvobushjdo/udagram-api-user:v5
+            docker push phucvobushjdo/udagram-api-feed:v5
+            docker push phucvobushjdo/udagram-frontend:v5
