@@ -3,20 +3,21 @@ import { HttpClient, HttpHeaders, HttpRequest, HttpEvent } from '@angular/common
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 
-const API_HOST = environment.apiHost;
+// const API_HOST = environment.apiHost;
+const API_HOST = 'http://a5060b49a85194013b40b31c624716ae-1875788023.us-east-1.elb.amazonaws.com:8080/api/v0';
+console.log('🚀 ~ file: api.service.ts:7 ~ API_HOST:', API_HOST);
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   token: string;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   static handleError(error: Error) {
     alert(error.message);
@@ -24,7 +25,7 @@ export class ApiService {
 
   static extractData(res: HttpEvent<any>) {
     const body = res;
-    return body || { };
+    return body || {};
   }
 
   setAuthToken(token) {
@@ -36,37 +37,35 @@ export class ApiService {
     const url = `${API_HOST}${endpoint}`;
     const req = this.http.get(url, this.httpOptions).pipe(map(ApiService.extractData));
 
-    return req
-            .toPromise()
-            .catch((e) => {
-              ApiService.handleError(e);
-              throw e;
-            });
+    return req.toPromise().catch((e) => {
+      ApiService.handleError(e);
+      throw e;
+    });
   }
 
   post(endpoint, data): Promise<any> {
     const url = `${API_HOST}${endpoint}`;
-    return this.http.post<HttpEvent<any>>(url, data, this.httpOptions)
-            .toPromise()
-            .catch((e) => {
-              ApiService.handleError(e);
-              throw e;
-            });
+    return this.http
+      .post<HttpEvent<any>>(url, data, this.httpOptions)
+      .toPromise()
+      .catch((e) => {
+        ApiService.handleError(e);
+        throw e;
+      });
   }
 
   async upload(endpoint: string, file: File, payload: any): Promise<any> {
     const signed_url = (await this.get(`${endpoint}/signed-url/${file.name}`)).url;
 
-    const headers = new HttpHeaders({'Content-Type': file.type});
-    const req = new HttpRequest( 'PUT', signed_url, file,
-                                  {
-                                    headers: headers,
-                                    reportProgress: true, // track progress
-                                  });
+    const headers = new HttpHeaders({ 'Content-Type': file.type });
+    const req = new HttpRequest('PUT', signed_url, file, {
+      headers: headers,
+      reportProgress: true, // track progress
+    });
 
-    return new Promise ( resolve => {
-        this.http.request(req).subscribe((resp) => {
-        if (resp && (<any> resp).status && (<any> resp).status === 200) {
+    return new Promise((resolve) => {
+      this.http.request(req).subscribe((resp) => {
+        if (resp && (<any>resp).status && (<any>resp).status === 200) {
           resolve(this.post(endpoint, payload));
         }
       });
